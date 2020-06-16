@@ -75,7 +75,7 @@ public class UIController {
 	}
 	
 	@DeleteMapping("/users/{userid}")  
-	private void deleteBook(@PathVariable("userid") long userid)   
+	public void deleteBook(@PathVariable("userid") long userid)   
 	{  
 		uiService.deleteUserByid(userid);  
 	}  
