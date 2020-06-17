@@ -1,10 +1,12 @@
 package com.cts.fse.projectmanager.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.cts.fse.projectmanager.dto.ParentTaskUI;
+import com.cts.fse.projectmanager.dto.ProjectCreateDTO;
+import com.cts.fse.projectmanager.dto.ProjectDataTableDTO;
+import com.cts.fse.projectmanager.dto.ProjectTaskDTO;
 import com.cts.fse.projectmanager.dto.ResponseEntity;
+import com.cts.fse.projectmanager.dto.TaskCreateDTO;
+import com.cts.fse.projectmanager.dto.TaskUI;
 import com.cts.fse.projectmanager.dto.UIUsers;
 import com.cts.fse.projectmanager.dto.Users;
 import com.cts.fse.projectmanager.services.UIService;
@@ -27,8 +35,15 @@ public class UIControllerTest {
 	private UIService uiService;
 	
 	@Test
-	public void testCreateUser() {
-		when(uiService.createUser(getUser())).thenReturn(false);
+	public void testCreateUser200() {
+		when(uiService.createUser(any())).thenReturn(true);
+		ResponseEntity<String> response=uiController.createUser(getUser());
+		assertEquals(response.getResponseCode(), "200");
+	}
+	
+	@Test
+	public void testCreateUser500() {
+		when(uiService.createUser(any())).thenReturn(false);
 		ResponseEntity<String> response=uiController.createUser(getUser());
 		assertEquals(response.getResponseCode(), "500");
 	}
@@ -40,6 +55,7 @@ public class UIControllerTest {
 		assertEquals(response.getResponseCode(), "500");	
 	}
 	
+		
 	@Test
 	public void testGetUser() {
 		when(uiService.findUserById(1)).thenReturn(getUser());
@@ -60,6 +76,66 @@ public class UIControllerTest {
 		uiController.deleteBook(1);
 	}
 	
+	@Test
+	public void testCreateProjec() {
+		when(uiService.createProject(any())).thenReturn(true);
+		ResponseEntity<String> response=uiController.createProject(getProjectCreateDTO());
+		assertEquals(response.getResponseCode(), "200");
+	}
+	
+	@Test
+	public void testupdateProject() {
+		when(uiService.updateProject(getProjectCreateDTO(), 1)).thenReturn(false);
+		ResponseEntity<String> response=uiController.updateProject(getProjectCreateDTO(),1);
+		assertEquals(response.getResponseCode(), "500");
+	}
+	
+	@Test
+	public void testfindAllProjects() {
+		List<ProjectDataTableDTO>allProjects=new ArrayList<ProjectDataTableDTO>();
+		allProjects.add(getProjectDataTableDTO());
+		when(uiService.findAllProjects()).thenReturn(allProjects);
+		List<ProjectDataTableDTO>findAllProjects=uiController.findAllProjects();
+		assertEquals(findAllProjects.size(), 1);	
+	}
+	
+	@Test
+	public void testUpdateTask() {
+		when(uiService.updateTask(getTaskCreateDTO(),1)).thenReturn(false);
+		ResponseEntity<String> response=uiController.updateTask(getTaskCreateDTO(),1);
+		assertEquals(response.getResponseCode(), "500");
+	}
+	
+	@Test
+	public void testCreateTask() {
+		when(uiService.createTask(getTaskCreateDTO())).thenReturn(false);
+		ResponseEntity<String> response=uiController.createTask(getTaskCreateDTO());
+		assertEquals(response.getResponseCode(), "500");
+	}
+	
+	@Test
+	public void testfindAllParentTask() {
+		List<ParentTaskUI>findAllParentTask=new ArrayList<ParentTaskUI>();
+		when(uiService.findAllParentTask()).thenReturn(findAllParentTask);
+		List<ParentTaskUI>res=uiController.findAllParentTask();
+		assertEquals(res.size(), 0);
+	}
+	
+	@Test
+	public void testfindAllProjectTaskMap() {
+		List<ProjectTaskDTO>findAllProjectTaskMap=new ArrayList<ProjectTaskDTO>();
+		when(uiService.findAllProjectTaskMap()).thenReturn(findAllProjectTaskMap);
+		List<ProjectTaskDTO>res=uiController.findAllProjectTaskMap();
+		assertEquals(res.size(), 0);
+	}
+	
+	@Test
+	public void testfindAllTaskByProject() {
+		List<TaskUI>findAllTaskByProject=new ArrayList<TaskUI>();
+		when(uiService.findAllTaskByProjectId(1)).thenReturn(findAllTaskByProject);
+		List<TaskUI>res=uiController.findAllTaskByProject(1);
+		assertEquals(res.size(), 0);
+	}
 	
 	private Users getUser() {
 		Users user=new Users();
@@ -82,5 +158,42 @@ public class UIControllerTest {
 		List<UIUsers>userLst=new ArrayList<UIUsers>();
 		userLst.add(getUIUser());
 		return userLst;
+	}
+	
+	public ProjectCreateDTO  getProjectCreateDTO() {
+		ProjectCreateDTO projectCreateDTO=new ProjectCreateDTO();
+		projectCreateDTO.setEndDate(new Date());
+		projectCreateDTO.setStartDate(new Date());
+		projectCreateDTO.setPriority(1);
+		projectCreateDTO.setProject("Test");
+		projectCreateDTO.setUserId(1);
+		return projectCreateDTO;
+	}
+	
+	public ProjectDataTableDTO getProjectDataTableDTO() {
+		ProjectDataTableDTO projectDataTableDTO=new ProjectDataTableDTO();
+		projectDataTableDTO.setEndDate("17/06/2020");
+		projectDataTableDTO.setFirstNameUser("Test");
+		projectDataTableDTO.setPriority(1);
+		projectDataTableDTO.setProjectId(1);
+		projectDataTableDTO.setProjectName("Test");
+		projectDataTableDTO.setStartDate("17/06/2020");
+		projectDataTableDTO.setTaskCompletedCount(1);
+		projectDataTableDTO.setTaskCount(1);
+		projectDataTableDTO.setUserId(1);
+		return projectDataTableDTO;
+	}
+	
+	public TaskCreateDTO getTaskCreateDTO() {
+		TaskCreateDTO taskCreateDTO=new TaskCreateDTO();
+		taskCreateDTO.setEndDate(null);
+		taskCreateDTO.setIsParentTask("true");
+		taskCreateDTO.setParentId(1);
+		taskCreateDTO.setProjectId(1);
+		taskCreateDTO.setStartDate(null);
+		taskCreateDTO.setStatus("Completed");
+		taskCreateDTO.setTask("Test");
+		taskCreateDTO.setUserId(1);
+		return taskCreateDTO;
 	}
 }
