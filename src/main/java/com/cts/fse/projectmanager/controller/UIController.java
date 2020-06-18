@@ -24,6 +24,7 @@ import com.cts.fse.projectmanager.dto.UIUsers;
 import com.cts.fse.projectmanager.dto.Users;
 import com.cts.fse.projectmanager.services.UIService;
 import com.cts.fse.projectmanager.utils.FseConstants;
+import com.cts.fse.projectmanager.utils.InvalidRequestException;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -34,7 +35,7 @@ public class UIController {
 	private UIService uiService;
 
 	@PostMapping("/users")
-	public ResponseEntity<String> createUser(@RequestBody Users user) {
+	public ResponseEntity<String> createUser(@RequestBody Users user) throws InvalidRequestException {
 		ResponseEntity<String> response = new ResponseEntity<>();
 		boolean status = false;
 		status = uiService.createUser(user);
@@ -49,7 +50,7 @@ public class UIController {
 	}
 	
 	@PutMapping("/users/{id}")
-	public ResponseEntity<String> updateUser(@RequestBody Users user, @PathVariable("id") long id) {
+	public ResponseEntity<String> updateUser(@RequestBody Users user, @PathVariable("id") long id)throws InvalidRequestException {
 		ResponseEntity<String> response = new ResponseEntity<>();
 		boolean status = false;
 		status = uiService.updateUser(user, id);
@@ -59,29 +60,30 @@ public class UIController {
 		} else {
 			response.setResponse("Not Persisted");
 			response.setResponseCode(FseConstants.INTERNALSERVERERROR);
+			
 		}
 		return response;
 	}
 
 	@GetMapping("/users/{userid}")
-	public Users getUser(@PathVariable("userid") long userid) {
+	public Users getUser(@PathVariable("userid") long userid)throws InvalidRequestException {
 		Users user = uiService.findUserById(userid);
 		return user;
 	}
 
 	@GetMapping("/users")
-	public List<UIUsers> getAllUsers() {
+	public List<UIUsers> getAllUsers()throws InvalidRequestException {
 		return uiService.findAllUsers();
 	}
 	
 	@DeleteMapping("/users/{userid}")  
-	public void deleteBook(@PathVariable("userid") long userid)   
+	public void deleteBook(@PathVariable("userid") long userid)throws InvalidRequestException   
 	{  
 		uiService.deleteUserByid(userid);  
 	}  
 
 	@PostMapping("/project")
-	public ResponseEntity<String> createProject(@RequestBody ProjectCreateDTO projectCreateDTO) {
+	public ResponseEntity<String> createProject(@RequestBody ProjectCreateDTO projectCreateDTO)throws InvalidRequestException {
 		ResponseEntity<String> response = new ResponseEntity<>();
 		boolean status = false;
 		status = uiService.createProject(projectCreateDTO);
@@ -96,7 +98,7 @@ public class UIController {
 	}
 	
 	@PutMapping("/project/{id}")
-	public ResponseEntity<String> updateProject(@RequestBody ProjectCreateDTO projectCreateDTO, @PathVariable("id") long id) {
+	public ResponseEntity<String> updateProject(@RequestBody ProjectCreateDTO projectCreateDTO, @PathVariable("id") long id)throws InvalidRequestException {
 		ResponseEntity<String> response = new ResponseEntity<>();
 		boolean status = false;
 		status = uiService.updateProject(projectCreateDTO, id);
@@ -111,12 +113,12 @@ public class UIController {
 	}
 	
 	@GetMapping("/project")
-	public List<ProjectDataTableDTO>findAllProjects(){
+	public List<ProjectDataTableDTO>findAllProjects()throws InvalidRequestException{
 		return uiService.findAllProjects();
 	}
 	
 	@PostMapping("/task")
-	public ResponseEntity<String> createTask(@RequestBody TaskCreateDTO taskCreateDTO) {
+	public ResponseEntity<String> createTask(@RequestBody TaskCreateDTO taskCreateDTO)throws InvalidRequestException {
 		ResponseEntity<String> response = new ResponseEntity<>();
 		boolean status = false;
 		status = uiService.createTask(taskCreateDTO);
@@ -131,22 +133,22 @@ public class UIController {
 	}
 	
 	@GetMapping("/parenttask")
-	public List<ParentTaskUI>findAllParentTask(){
+	public List<ParentTaskUI>findAllParentTask()throws InvalidRequestException{
 		return uiService.findAllParentTask();
 	}
 	
 	@GetMapping("/projecttask")
-	public List<ProjectTaskDTO>findAllProjectTaskMap(){
+	public List<ProjectTaskDTO>findAllProjectTaskMap()throws InvalidRequestException{
 		return uiService.findAllProjectTaskMap();
 	}
 	
 	@GetMapping("/task/{projectId}")
-	public List<TaskUI>findAllTaskByProject(@PathVariable("projectId")long projectId){
+	public List<TaskUI>findAllTaskByProject(@PathVariable("projectId")long projectId)throws InvalidRequestException{
 		return uiService.findAllTaskByProjectId(projectId);
 	}
 	
 	@PostMapping("/task/{id}")
-	public ResponseEntity<String> updateTask(@RequestBody TaskCreateDTO taskCreateDTO,@PathVariable("id") long id) {
+	public ResponseEntity<String> updateTask(@RequestBody TaskCreateDTO taskCreateDTO,@PathVariable("id") long id)throws InvalidRequestException {
 		ResponseEntity<String> response = new ResponseEntity<>();
 		boolean status = false;
 		status = uiService.updateTask(taskCreateDTO, id);

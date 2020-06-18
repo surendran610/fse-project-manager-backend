@@ -2,6 +2,8 @@ package com.cts.fse.projectmanager.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ProjectCreateDTO {
 
 	private String project;
@@ -26,6 +28,7 @@ public class ProjectCreateDTO {
 		return startDate;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
@@ -34,6 +37,7 @@ public class ProjectCreateDTO {
 		return endDate;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}

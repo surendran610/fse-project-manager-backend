@@ -2,6 +2,8 @@ package com.cts.fse.projectmanager.dto;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class TaskCreateDTO {
 	
 	private long id;
@@ -33,7 +35,7 @@ public class TaskCreateDTO {
 	public Date getStartDate() {
 		return startDate;
 	}
-
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
@@ -41,7 +43,7 @@ public class TaskCreateDTO {
 	public Date getEndDate() {
 		return endDate;
 	}
-
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd")
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}

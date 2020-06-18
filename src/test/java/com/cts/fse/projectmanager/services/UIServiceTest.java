@@ -34,6 +34,7 @@ import com.cts.fse.projectmanager.repository.ParentTaskRepository;
 import com.cts.fse.projectmanager.repository.ProjectRepository;
 import com.cts.fse.projectmanager.repository.TaskRepository;
 import com.cts.fse.projectmanager.repository.UsersRepository;
+import com.cts.fse.projectmanager.utils.InvalidRequestException;
 
 @SpringBootTest
 public class UIServiceTest {
@@ -54,14 +55,14 @@ public class UIServiceTest {
 	private ParentTaskRepository parentTaskRepository;
 
 	@Test
-	public void createUserTest() {
+	public void createUserTest() throws InvalidRequestException {
 		when(usersRepository.save(any())).thenReturn(getUser());
 		boolean isSaved = uiService.createUser(getUser());
 		assertTrue(isSaved);
 	}
 
 	@Test
-	public void updateUserTestempty() {
+	public void updateUserTestempty()throws InvalidRequestException {
 		when(usersRepository.findById(any())).thenReturn(Optional.empty());
 		boolean isSaved = uiService.updateUser(getUser(), 1);
 		System.out.println(isSaved);
@@ -69,21 +70,21 @@ public class UIServiceTest {
 	}
 
 	@Test
-	public void updateUserTest() {
+	public void updateUserTest()throws InvalidRequestException {
 		when(usersRepository.findById(any())).thenReturn(Optional.of(getUser()));
 		boolean isSaved = uiService.updateUser(getUser(), 1);
 		assertTrue(isSaved);
 	}
 
 	@Test
-	public void findUserByIdTest() {
+	public void findUserByIdTest() throws InvalidRequestException{
 		when(usersRepository.findById(any())).thenReturn(Optional.of(getUser()));
 		Users user = uiService.findUserById(1);
 		assertEquals(user.getFirstName(), "Suren");
 	}
 
 	@Test
-	public void findAllUsersTest() {
+	public void findAllUsersTest()throws InvalidRequestException {
 		List<Users> usersList = new ArrayList<Users>();
 		usersList.add(getUser());
 		when(usersRepository.findAll()).thenReturn(usersList);
@@ -92,13 +93,13 @@ public class UIServiceTest {
 	}
 
 	@Test
-	public void deleteUserByIdTest() {
+	public void deleteUserByIdTest()throws InvalidRequestException {
 		doNothing().when(usersRepository).deleteById(1l);
 		uiService.deleteUserByid(1l);
 	}
 
 	@Test
-	public void createProjectTest() {
+	public void createProjectTest()throws InvalidRequestException {
 		when(usersRepository.findById(any())).thenReturn(Optional.of(getUser()));
 		when(usersRepository.save(any())).thenReturn(getUser());
 		when(projectRepository.save(any())).thenReturn(getProject());
@@ -107,7 +108,7 @@ public class UIServiceTest {
 	}
 
 	@Test
-	public void updateProjectTest() {
+	public void updateProjectTest()throws InvalidRequestException {
 		when(projectRepository.findById(any())).thenReturn(Optional.of(getProject()));
 		when(usersRepository.findById(any())).thenReturn(Optional.of(getUser()));
 		when(usersRepository.save(any())).thenReturn(getUser());
@@ -117,7 +118,7 @@ public class UIServiceTest {
 	}
 
 	@Test
-	public void createTaskTrue() {
+	public void createTaskTrue()throws InvalidRequestException {
 		when(parentTaskRepository.save(any())).thenReturn(getParentTask());
 		when(projectRepository.findById(any())).thenReturn(Optional.of(getProject()));
 		when(usersRepository.findById(any())).thenReturn(Optional.of(getUser()));
@@ -126,7 +127,7 @@ public class UIServiceTest {
 	}
 	
 	@Test
-	public void updateTaskTrue() {
+	public void updateTaskTrue()throws InvalidRequestException {
 		when(parentTaskRepository.save(any())).thenReturn(getParentTask());
 		when(projectRepository.findById(any())).thenReturn(Optional.of(getProject()));
 		when(usersRepository.findById(any())).thenReturn(Optional.of(getUser()));
@@ -137,7 +138,7 @@ public class UIServiceTest {
 	}
 	
 	@Test
-	public void createTaskfalse() {
+	public void createTaskfalse()throws InvalidRequestException {
 		TaskCreateDTO taskCreateDTO=getTaskCreateDTO();
 		taskCreateDTO.setIsParentTask("false");
 		when(parentTaskRepository.save(any())).thenReturn(getParentTask());
@@ -149,7 +150,7 @@ public class UIServiceTest {
 	}
 	
 	@Test
-	public void updateTaskfalse() {
+	public void updateTaskfalse() throws InvalidRequestException{
 		TaskCreateDTO taskCreateDTO=getTaskCreateDTO();
 		taskCreateDTO.setIsParentTask("false");
 		when(parentTaskRepository.save(any())).thenReturn(getParentTask());
@@ -162,7 +163,7 @@ public class UIServiceTest {
 	}
 	
 	@Test
-	public void findAllProjectTest() {
+	public void findAllProjectTest()throws InvalidRequestException {
 		List<Project> projectList = new ArrayList<Project>();
 		projectList.add(getProject());
 		when(projectRepository.findAll()).thenReturn(projectList);
@@ -171,7 +172,7 @@ public class UIServiceTest {
 	}
 	
 	@Test
-	public void findAllParentTaskTest() {
+	public void findAllParentTaskTest()throws InvalidRequestException {
 		List<ParentTask> parentTaskList=new ArrayList<ParentTask>();
 		parentTaskList.add(getParentTask());
 		when(parentTaskRepository.findAll()).thenReturn(parentTaskList);
@@ -180,7 +181,7 @@ public class UIServiceTest {
 	}
 
 	@Test
-	public void findAllProjectTaskMapTest() {
+	public void findAllProjectTaskMapTest()throws InvalidRequestException {
 		List<Task> allTask=new ArrayList<Task>();
 		allTask.add(getTask());
 		when(taskRepository.findAll()).thenReturn(allTask);
@@ -188,7 +189,7 @@ public class UIServiceTest {
 		assertEquals(allProjectTask.size(), 1);
 	}
 	@Test
-	public void findAllTaskByProjectIdTest() {
+	public void findAllTaskByProjectIdTest() throws InvalidRequestException{
 		List<Task> allTask=new ArrayList<Task>();
 		allTask.add(getTask());
 		when(taskRepository.findAllTaskByProjectId(1l)).thenReturn(allTask);

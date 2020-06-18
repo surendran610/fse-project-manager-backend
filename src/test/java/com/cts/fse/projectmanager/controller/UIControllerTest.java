@@ -24,6 +24,7 @@ import com.cts.fse.projectmanager.dto.TaskUI;
 import com.cts.fse.projectmanager.dto.UIUsers;
 import com.cts.fse.projectmanager.dto.Users;
 import com.cts.fse.projectmanager.services.UIService;
+import com.cts.fse.projectmanager.utils.InvalidRequestException;
 
 @SpringBootTest
 public class UIControllerTest {
@@ -35,21 +36,21 @@ public class UIControllerTest {
 	private UIService uiService;
 	
 	@Test
-	public void testCreateUser200() {
+	public void testCreateUser200() throws InvalidRequestException {
 		when(uiService.createUser(any())).thenReturn(true);
 		ResponseEntity<String> response=uiController.createUser(getUser());
 		assertEquals(response.getResponseCode(), "200");
 	}
 	
 	@Test
-	public void testCreateUser500() {
+	public void testCreateUser500() throws InvalidRequestException {
 		when(uiService.createUser(any())).thenReturn(false);
 		ResponseEntity<String> response=uiController.createUser(getUser());
 		assertEquals(response.getResponseCode(), "500");
 	}
 	
 	@Test
-	public void testUpdateUser() {
+	public void testUpdateUser() throws InvalidRequestException {
 		when(uiService.updateUser(getUser(),1)).thenReturn(false);
 		ResponseEntity<String> response=uiController.updateUser(getUser(),1);
 		assertEquals(response.getResponseCode(), "500");	
@@ -57,41 +58,41 @@ public class UIControllerTest {
 	
 		
 	@Test
-	public void testGetUser() {
+	public void testGetUser() throws InvalidRequestException {
 		when(uiService.findUserById(1)).thenReturn(getUser());
 		Users response=uiController.getUser(1);
 		assertEquals(response.getEmpId(), "12345");	
 	}
 	
 	@Test
-	public void testGetAllUsers() {
+	public void testGetAllUsers() throws InvalidRequestException{
 		when(uiService.findAllUsers()).thenReturn(listUser());
 		List<UIUsers> response=uiController.getAllUsers();
 		assertEquals(response.size(), 1);	
 	}
 
 	@Test
-	public void testDeleteBook() {
+	public void testDeleteBook() throws InvalidRequestException{
 		doNothing().when(uiService).deleteUserByid(1);
 		uiController.deleteBook(1);
 	}
 	
 	@Test
-	public void testCreateProjec() {
+	public void testCreateProjec() throws InvalidRequestException{
 		when(uiService.createProject(any())).thenReturn(true);
 		ResponseEntity<String> response=uiController.createProject(getProjectCreateDTO());
 		assertEquals(response.getResponseCode(), "200");
 	}
 	
 	@Test
-	public void testupdateProject() {
+	public void testupdateProject() throws InvalidRequestException{
 		when(uiService.updateProject(getProjectCreateDTO(), 1)).thenReturn(false);
 		ResponseEntity<String> response=uiController.updateProject(getProjectCreateDTO(),1);
 		assertEquals(response.getResponseCode(), "500");
 	}
 	
 	@Test
-	public void testfindAllProjects() {
+	public void testfindAllProjects() throws InvalidRequestException{
 		List<ProjectDataTableDTO>allProjects=new ArrayList<ProjectDataTableDTO>();
 		allProjects.add(getProjectDataTableDTO());
 		when(uiService.findAllProjects()).thenReturn(allProjects);
@@ -100,21 +101,21 @@ public class UIControllerTest {
 	}
 	
 	@Test
-	public void testUpdateTask() {
+	public void testUpdateTask() throws InvalidRequestException{
 		when(uiService.updateTask(getTaskCreateDTO(),1)).thenReturn(false);
 		ResponseEntity<String> response=uiController.updateTask(getTaskCreateDTO(),1);
 		assertEquals(response.getResponseCode(), "500");
 	}
 	
 	@Test
-	public void testCreateTask() {
+	public void testCreateTask() throws InvalidRequestException{
 		when(uiService.createTask(getTaskCreateDTO())).thenReturn(false);
 		ResponseEntity<String> response=uiController.createTask(getTaskCreateDTO());
 		assertEquals(response.getResponseCode(), "500");
 	}
 	
 	@Test
-	public void testfindAllParentTask() {
+	public void testfindAllParentTask() throws InvalidRequestException{
 		List<ParentTaskUI>findAllParentTask=new ArrayList<ParentTaskUI>();
 		when(uiService.findAllParentTask()).thenReturn(findAllParentTask);
 		List<ParentTaskUI>res=uiController.findAllParentTask();
@@ -122,7 +123,7 @@ public class UIControllerTest {
 	}
 	
 	@Test
-	public void testfindAllProjectTaskMap() {
+	public void testfindAllProjectTaskMap() throws InvalidRequestException{
 		List<ProjectTaskDTO>findAllProjectTaskMap=new ArrayList<ProjectTaskDTO>();
 		when(uiService.findAllProjectTaskMap()).thenReturn(findAllProjectTaskMap);
 		List<ProjectTaskDTO>res=uiController.findAllProjectTaskMap();
@@ -130,7 +131,7 @@ public class UIControllerTest {
 	}
 	
 	@Test
-	public void testfindAllTaskByProject() {
+	public void testfindAllTaskByProject() throws InvalidRequestException{
 		List<TaskUI>findAllTaskByProject=new ArrayList<TaskUI>();
 		when(uiService.findAllTaskByProjectId(1)).thenReturn(findAllTaskByProject);
 		List<TaskUI>res=uiController.findAllTaskByProject(1);
