@@ -27,7 +27,7 @@ http://localhost:8099/fse/api/users/4
 
 http://localhost:8099/fse/api/users        [GET]
 
-===============================================
+
 Projects:
 
 http://localhost:8099/fse/api/project    	[POST]
