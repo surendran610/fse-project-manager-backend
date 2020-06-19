@@ -1,4 +1,3 @@
-# fse-project-manager-backend
 API Details:
 ================================================
 Users:
@@ -25,7 +24,9 @@ please check database and get id to delete user
 (example)
 http://localhost:8099/fse/api/users/4
 
+
 http://localhost:8099/fse/api/users        [GET]
+
 ===============================================
 Projects:
 
@@ -53,7 +54,7 @@ http://localhost:8099/fse/api/project/2
 
 http://localhost:8099/fse/api/project    [GET]
 
-===========================================
+
 Task:
 	
 http://localhost:8099/fse/api/task [POST]
@@ -113,4 +114,4 @@ Find task by project id ,get project id from database
 http://localhost:8099/fse/api/task/{projectId}
 (for Example)
 http://localhost:8099/fse/api/task/1
-====================================
+
