@@ -10,11 +10,11 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cts.fms</groupId>
-	<artifactId>cts-fse-projectmanager</artifactId>
+	<artifactId>fse-projectmanager-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cts-fse-projectmanager</name>
+	<name>fse-projectmanager-backend</name>
 	<description>com.cts.fms</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -95,6 +95,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+				<finalName>fse-projectmanager-backend</finalName>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
